@@ -1,7 +1,0 @@
-CreateNetwork - BLOB Spatial
-:memory: #use in-memory database
-SELECT CreateNetwork('roads', zeroblob(4));
-1 # rows (not including the header row)
-1 # columns
-CreateNetwork('roads', zeroblob(4))
--1

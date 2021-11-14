@@ -1,7 +1,0 @@
-TopoNet_Clone - Int Network (origin)
-:memory: #use in-memory database
-SELECT TopoNet_Clone('a', 1, 'destination');
-1 # rows (not including the header row)
-1 # columns
-TopoNet_Clone('a', 1, 'destination')
-SQL/MM Spatial exception - invalid argument.

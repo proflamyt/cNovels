@@ -1,7 +1,0 @@
-CreateNetwork - NULL Network
-:memory: #use in-memory database
-SELECT CreateNetwork(NULL);
-1 # rows (not including the header row)
-1 # columns
-CreateNetwork(NULL)
--1

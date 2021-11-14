@@ -1,7 +1,0 @@
-TopoNet_GetLinkSeed - Text Face
-:memory: #use in-memory database
-SELECT TopoNet_GetLinkSeed('network', 'face');
-1 # rows (not including the header row)
-1 # columns
-TopoNet_GetLinkSeed('network', 'face')
-SQL/MM Spatial exception - invalid argument.

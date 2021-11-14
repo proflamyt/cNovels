@@ -1,7 +1,0 @@
-CreateNetwork - Text Network
-:memory: #use in-memory database
-SELECT CreateNetwork('roads');
-1 # rows (not including the header row)
-1 # columns
-CreateNetwork('roads')
-1
