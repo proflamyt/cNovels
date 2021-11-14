@@ -1,6 +1,6 @@
 from rest_framework.schemas import get_schema_view
 from django.urls import path
-from .views import AddAdminView, GroupCreateAPIView, GroupJoinAPIView, GroupMembersList, CheckUSer
+from .views import AddAdminView, GroupCreateAPIView, GroupJoinAPIView, LocationList, GroupMembersList, CheckUSer
 
 urlpatterns = [
     # ...
@@ -17,7 +17,8 @@ urlpatterns = [
     path('join', GroupJoinAPIView.as_view()),
     path('member-list/<str:room>',GroupMembersList.as_view()),
     path('add-admin/',AddAdminView.as_view()) ,
-    path('intrest',CheckUSer.as_view())
+    path('intrest',CheckUSer.as_view()),
+    path('location', LocationList.as_view())
     
 
 ]

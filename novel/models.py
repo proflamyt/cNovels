@@ -330,10 +330,9 @@ class NovelMap(models.Model):
     discription = models.TextField()
     novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
 
-#from django.contrib.gis.db import models
+from django.contrib.gis.db.models import PointField
 class MapPoint(models.Model):
- 
-    #coord =  models.PointField()
+
+    coord =  PointField()
     name = models.CharField(max_length=30)
     discription = models.TextField()
-    

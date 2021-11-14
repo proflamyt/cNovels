@@ -172,7 +172,7 @@ class LocationList(ListAPIView):
 
     queryset = MapPoint.objects.all()
     serializer_class = LocationSerializer
-    distance_filter_field = 'geometry'
+    distance_filter_field = 'coord'
     filter_backends = (DistanceToPointFilter,)
 
 #save discussion
