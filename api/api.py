@@ -1,13 +1,14 @@
 from django.http.response import Http404
-from novel.models import Audio, Genre, Novel, Poems, Weekly
+from novel.models import Audio, Genre, Novel, Poems, Weekly, NovelMap
 from rest_framework import generics, serializers, viewsets, status, filters, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, action
-from .serializers import AudioSerializer, GenreSerializer, NovelSerializer, PoemSerializer, UserSerializer,  WeeklySerializer
+from .serializers import AudioSerializer, GenreSerializer, NovelSerializer, PoemSerializer, UserSerializer,NovelMapSerializer,  WeeklySerializer
 from django.contrib.auth import get_user_model
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.views import APIView
 User = get_user_model()
+from django.shortcuts import get_object_or_404
 
 
 class NovelRealease(generics.ListAPIView):
@@ -109,4 +110,16 @@ class RecentReadViewSet(APIView):
         serializer  = NovelSerializer(recents, many=True)
         return Response(serializer.data)
 
+
+
+class NovelViewMap(APIView):
+    def get_object(self , pk):
+        novel  = get_object_or_404(NovelMap, novel__id=pk)
+        return novel
+
+    def get(self,request, pk):
+        novel_map = self.get_object(pk)
+        #serialize map and return
+        serializer  = NovelMapSerializer(novel_map)
+        return Response(serializer.data)
 

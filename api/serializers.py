@@ -48,3 +48,21 @@ class PoemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poems
         exclude =  ['bookFile', 'story']
+
+
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
+class MapPointSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = MapPoint
+        geo_field = 'coord'
+        id_field = False
+        exclude = ('general_map',)
+
+
+class NovelMapSerializer(serializers.ModelSerializer):
+    general_map =  MapPointSerializer(many=True)
+    class Meta:
+        model = NovelMap
+        geo_field = 'general_map'
+        id_field=False
+        exclude =('novel',)
