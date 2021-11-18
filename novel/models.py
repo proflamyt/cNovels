@@ -326,13 +326,15 @@ class GroupChat(models.Model):
 
 class NovelMap(models.Model):
     name = models.CharField(max_length=30)
-    point =  models.ForeignKey('MapPoint', on_delete=models.CASCADE)
     discription = models.TextField()
     novel = models.ForeignKey(Novel, on_delete=models.CASCADE)
+class Maptype(models.Model):
+    name = models.CharField(max_length=30)
 
 from django.contrib.gis.db.models import PointField
 class MapPoint(models.Model):
-
     coord =  PointField()
     name = models.CharField(max_length=30)
     discription = models.TextField()
+    map_type = models.ForeignKey(Maptype,blank=True,null=True, on_delete=models.CASCADE)#should be add to the options
+    general_map = models.ForeignKey(NovelMap, on_delete = models.CASCADE, related_name='general_map', null=True)

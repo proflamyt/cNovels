@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'novel',
+    'leaflet',
     'ckeditor',
     'star_ratings',
     'corsheaders',
      "dj_rest_auth",
+     'django.contrib.gis',
     "allauth",
     "multiselectfield",
     "allauth.account",
@@ -139,7 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'novel/statics/'
 STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
@@ -220,3 +222,26 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 REST_USE_JWT = True
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/login'
+
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (20.2521, 80.9774), #default center of your map
+    'DEFAULT_ZOOM': 1, # default zoom level
+    'MIN_ZOOM': 1,
+    'MAX_ZOOM': 10,
+    'SCALE': 'both',
+    'ATTRIBUTION_PRIFIX': 'tekson', #attribution of your map
+    'RESET_VIEW': False,
+    'TILES': [('Old Map',"https://cartocdn-gusc.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png",
+     {'attribution': '&copy; Big eye', 'maxZoom': 16}
+     ),
+     ('Drak Map', 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            'subdomains': 'abcd',
+            'maxZoom': 19
+        })
+        
+        
+        ]
+       
+    }
