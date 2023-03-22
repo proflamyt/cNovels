@@ -9,6 +9,7 @@ class NovelModel(models.Model):
     title = models.CharField(max_length=100)
     authors = models.ManyToManyField(AuthorModel, related_name='books')
     readers_num = models.IntegerField(blank=True, null=True)
+    ratings = models.IntegerField(default=5.0)
     image = models.ImageField(null=True)
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)
@@ -24,6 +25,21 @@ class NovelModel(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+
+class Goal(models.Model):
+    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    goal_type_choices = (
+        ('reading', 'Reading'),
+        ('reviewing', 'Reviewing'),
+        ('discussing', 'Discussing')
+    )
+    goal_type = models.CharField(max_length=20, choices=goal_type_choices)
+    target_date = models.DateField()
+
+    class Meta:
+        unique_together = ('book', 'user')
     
 
 class ChapterModel(models.Model):
@@ -77,3 +93,12 @@ class Area(models.Model):
  
 
 
+class SnapShots(models.Model):
+    novel = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='book_images/')
+
+    class Meta:
+        verbose_name_plural = 'book images'
+
+    def __str__(self):
+        return f"{self.novel.title} image {self.id}"
