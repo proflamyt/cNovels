@@ -5,7 +5,7 @@ from django.conf import settings
 
 class AuthorModel(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=23, db_index=True)
+    name = models.CharField(max_length=23, db_index=True, null=True)
     
 
 

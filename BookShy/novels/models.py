@@ -7,15 +7,15 @@ from django.urls import reverse
 # Create your models here.
 class NovelModel(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(AuthorModel, on_delete=models.CASCADE, related_name='books')
+    authors = models.ManyToManyField(AuthorModel, related_name='books')
     readers_num = models.IntegerField(blank=True, null=True)
-    image = models.ImageField()
+    image = models.ImageField(null=True)
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)
     pubished = models.BooleanField(default=True)
-    maptype = models.ForeignKey('MapType',on_delete=models.CASCADE, null=True, blank=True)
+    maptype = models.ForeignKey('MapType', on_delete=models.CASCADE, null=True, blank=True)
     date_uploaded = models.DateTimeField(
-        null=False, blank=False, auto_now_add=True)
+        null=True, blank=True, auto_now_add=True)
     
 
     class Meta():
@@ -27,11 +27,11 @@ class NovelModel(models.Model):
     
 
 class ChapterModel(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, null=True)
     book = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='chapters')
-    text = models.TextField()
+    text = models.TextField(null=True)
     date_uploaded = models.DateTimeField(
-        null=False, blank=False, auto_now_add=True)
+        null=True, blank=True, auto_now_add=True)
     
     def __str__(self) -> str:
         return self.title
@@ -55,9 +55,9 @@ class Marker(models.Model):
     name = models.CharField(max_length=255)
     location = models.PointField()
     claimed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, null=True, blank=True)
-    maptype  = models.ForeignKey(MapType,blank=True,null=True, on_delete=models.CASCADE)
+    maptype  = models.ForeignKey(MapType, blank=True,null=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
-    chapter = models.ForeignKey(ChapterModel,on_delete=models.CASCADE, null=True, blank=True)
+    chapter = models.ManyToManyField(ChapterModel, related_name='chapters')
 
     def __str__(self):
         """Return string representation."""
@@ -72,7 +72,7 @@ class Area(models.Model):
     location = PolygonField()
     description = models.TextField()
     claimed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE,null=True, blank=True)
-    chapter = models.ForeignKey(ChapterModel,on_delete=models.CASCADE, null=True, blank=True)
+    chapter = models.ManyToManyField(ChapterModel, related_name='chapter_areas')
 
  
 
