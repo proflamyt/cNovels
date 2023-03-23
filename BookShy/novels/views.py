@@ -1,13 +1,20 @@
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter
 
-from .serializers import NovelSerializer, ChapterSerializer
-from .models import NovelModel
+
+from .serializers import NovelSerializer, ChapterSerializer, SnapshotSerializer
+from .models import NovelModel, SnapShots
+
+from .utils.map_server import map_view
 
 from django_filters.rest_framework.backends import DjangoFilterBackend
+
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 class NovelView(APIView):
@@ -66,3 +73,29 @@ class NovelSearchView(APIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['genre']
     search_fields = ['title']
+
+
+# cache
+class RenderMap(APIView):
+
+    @method_decorator(cache_page(60*60*2))
+    def get(self, zoom, x, y, z):    
+        response = HttpResponse(map_view(zoom, x, y, z), content_type='image/png')
+        return response
+
+
+
+class SnapShotsView(APIView):
+    def get(self, request, pk):
+        try:
+            images = NovelModel.objects.select_related('snap_images__snapshots').get(id=pk)
+            serializer = SnapshotSerializer(data=images.snap_images.snapshots, many=True)
+            return Response({
+                "status": "success", 
+                "data": serializer.data
+            })
+        except:
+            return Response({
+                "status": "fail", 
+                "error": "no Novel found with the given ID"
+            })

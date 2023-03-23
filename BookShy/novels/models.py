@@ -94,7 +94,7 @@ class Area(models.Model):
 
 
 class SnapShots(models.Model):
-    novel = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='images')
+    novel = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='snap_images')
     image = models.ImageField(upload_to='book_images/')
 
     class Meta:

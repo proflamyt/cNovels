@@ -1,0 +1,21 @@
+MAP
+    NAME "My Map"
+    STATUS ON
+    EXTENT 0 0 1000 1000
+    UNITS meters
+    SHAPEPATH "/path/to/shapefiles"
+    IMAGECOLOR 255 255 255
+
+    LAYER
+        NAME "Base Image"
+        TYPE RASTER
+        STATUS DEFAULT
+        DATA "/path/to/image.png"
+        EXTENT 0 0 1000 1000
+        PROJECTION
+            "init=epsg:4326"
+        END
+    END
+
+  
+END

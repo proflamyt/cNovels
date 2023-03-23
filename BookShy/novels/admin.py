@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.gis.admin import GeoModelAdmin
 
 
 from novels.models import NovelModel, ChapterModel, MapType, Marker, Area
@@ -9,8 +10,12 @@ class ChapterAdmin(admin.ModelAdmin):
     list_display = ('title', 'book')
     list_filter = ('book',)
 
+
+class CustomGeoAdmin(GeoModelAdmin):
+    wms_url = 'http://127.0.0.1/novels/tiles/'
+
 admin.site.register(NovelModel)
 admin.site.register(ChapterModel, ChapterAdmin)
 admin.site.register(MapType)
-admin.site.register(Marker)
+admin.site.register(Marker, CustomGeoAdmin)
 admin.site.register(Area)
