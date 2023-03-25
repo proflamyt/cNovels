@@ -18,6 +18,15 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 class NovelView(APIView):
+    # Only author should create books
+
+    """"
+
+    Get all Books
+    ?weekly_featured=true : sends weekly featured
+    ?special_featured=true : only specially featured novels
+    
+    """
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
