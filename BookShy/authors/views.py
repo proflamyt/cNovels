@@ -9,6 +9,6 @@ class AuthorView(ListAPIView):
     queryset = AuthorModel.objects.all()
     serializer_class = AuthorSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields =['weekly_featured','special_featured']
+    filterset_fields =['weekly_featured', 'special_featured']
     
 

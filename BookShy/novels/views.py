@@ -9,8 +9,8 @@ from rest_framework.exceptions import APIException
 from .utils.custom_permission import CanReadBook
 
 
-from .serializers import ChapterReadSerializer, NovelSerializer, ChapterSerializer, SnapshotSerializer
-from .models import ChapterModel, NovelModel, SnapShots, UserBook
+from .serializers import ChapterReadSerializer, NovelSerializer, ChapterSerializer, SnapshotSerializer, UserBookGoalSerializer
+from .models import ChapterModel, Goal, NovelModel, SnapShots, UserBook
 
 from .utils.map_server import map_view
 
@@ -142,3 +142,11 @@ class ReadChapterView(APIView):
                 "status": "failed",
                 "error": "No Chapter with Id "
             }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserBookGoalList(generics.ListAPIView):
+    serializer_class = UserBookGoalSerializer
+
+    def get_queryset(self):
+        
+        return Goal.objects.filter(user=self.request.user)

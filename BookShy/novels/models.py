@@ -36,6 +36,7 @@ class Goal(models.Model):
         ('discussing', 'Discussing')
     )
     goal_type = models.CharField(max_length=20, choices=goal_type_choices)
+    is_achieved = models.BooleanField(default=False)
     target_date = models.DateField()
 
     class Meta:

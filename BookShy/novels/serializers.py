@@ -26,3 +26,8 @@ class SnapshotSerializer(serializers.ModelSerializer):
 
 class ChapterReadSerializer(ChapterSerializer):
     content = serializers.CharField()
+
+
+class UserBookGoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        exclude = ('user')
