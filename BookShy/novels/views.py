@@ -4,10 +4,13 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.filters import SearchFilter
+from rest_framework.exceptions import APIException
+
+from .utils.custom_permission import CanReadBook
 
 
-from .serializers import NovelSerializer, ChapterSerializer, SnapshotSerializer
-from .models import NovelModel, SnapShots
+from .serializers import ChapterReadSerializer, NovelSerializer, ChapterSerializer, SnapshotSerializer
+from .models import ChapterModel, NovelModel, SnapShots, UserBook
 
 from .utils.map_server import map_view
 
@@ -107,4 +110,35 @@ class SnapShotsView(APIView):
             return Response({
                 "status": "fail", 
                 "error": "no Novel found with the given ID"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class ReadChapterView(APIView):
+    """
+     Read Chapter in a Book
+    """
+    permission_classes = [IsAuthenticated, CanReadBook]
+
+    def get(self, request, book, chapter):
+        try:
+            novel = UserBook.objects.prefetch_related('book__chapters').get(book=book)
+            self.check_object_permissions(request, novel)
+            serializer =  ChapterReadSerializer(novel.book.chapters.get(id=chapter))
+            return Response({
+                "status": "success",
+                "data": serializer.data
             })
+        except APIException as e: 
+            return Response({
+                "status": "failed",
+                "data": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception :
+            # log
+            return Response({
+                "status": "failed",
+                "error": "No Chapter with Id "
+            }, status=status.HTTP_400_BAD_REQUEST)

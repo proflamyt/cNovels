@@ -7,6 +7,7 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 COPY .env /code/BookShy
+EXPOSE 8000
 # Setup GDAL
 RUN apt-get update &&\
     apt-get install -y binutils libproj-dev gdal-bin  python3-gdal

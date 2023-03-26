@@ -45,7 +45,7 @@ class Goal(models.Model):
 class ChapterModel(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     book = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='chapters')
-    text = models.TextField(null=True)
+    content = models.TextField(null=True)
     date_uploaded = models.DateTimeField(
         null=True, blank=True, auto_now_add=True)
     
@@ -102,3 +102,19 @@ class SnapShots(models.Model):
 
     def __str__(self):
         return f"{self.novel.title} image {self.id}"
+    
+
+
+class UserBook(models.Model):
+
+    STATUS_CHOICES = [
+        ('u', 'unread'),
+        ('r', 'read'),
+        ('f', 'finished'),
+    ]
+    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    can_read = models.BooleanField(default=False)
+    state = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default='u')
