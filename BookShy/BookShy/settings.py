@@ -14,6 +14,7 @@ from pathlib import Path
 from os import getenv, path
 from dotenv import load_dotenv
 import dj_database_url
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,9 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'authentication',
+    'communityapp',
     'authors',
-    'novels',
-    'communityapp'
+     'novels',
+    #
 
     
 ]
@@ -141,7 +143,35 @@ AUTH_USER_MODEL = 'authentication.User'
 
 GDAL_LIBRARY_PATH = r'C:\OSGeo4W\bin\gdal306.dll'
 
+if DEBUG:
+  
+    SIMPLE_JWT = {
 
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
+
+    }
+    CORS_ORIGIN_ALLOW_ALL = True
+    
+else:
+    
+   
+    SIMPLE_JWT = {
+
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+
+    }
+    CORS_ORIGIN_ALLOW_ALL = True
+    CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    
+}
 
 import os
 if os.name == 'nt':

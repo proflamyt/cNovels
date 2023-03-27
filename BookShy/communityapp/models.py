@@ -57,5 +57,5 @@ class GroupChat(models.Model):
 
 
 class AudioRoom(models.Model):
-    authors = models.ManyToManyField('authors.AuthorModel', )
+    authors = models.ManyToManyField('authors.AuthorModel', null=True,)
     

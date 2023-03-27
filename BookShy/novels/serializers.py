@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import NovelModel, ChapterModel, SnapShots
+from authors.serializers import AuthorSerializer
 
 
 class NovelSerializer(serializers.ModelSerializer):
+    authors = AuthorSerializer(many=True)
 
     class Meta:
         model = NovelModel
-        fields = ['title', 'image', 'author__name']
+        fields = ['title', 'image', 'authors']
 
 
 

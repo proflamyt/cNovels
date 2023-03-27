@@ -15,6 +15,5 @@ urlpatterns = [
     path('login/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('resend-email', ResendMail.as_view())
- 
-    
+   
 ]

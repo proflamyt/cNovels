@@ -11,19 +11,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token['profile'] = user.userintrest.profile[0]
+        try:
+            token['profile'] = user.userintrest.profile[0]
+        except:
+            token['profile'] = False
         token['email_confirmed'] = user.email_confirmed
         return token
     
 
 class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User.objects.create(
+        user = User.objects.create_user(
             **validated_data
         )
-        user.set_password(password)
+        
         # user.email_user('Token', 'token') 
         return user
 
@@ -45,7 +48,7 @@ class UserInterestSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserIntrest
-        fields = '__all__'
+        exclude = ('user',)
         
 
 class EmailSerializer(serializers.Serializer):

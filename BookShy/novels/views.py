@@ -30,24 +30,30 @@ class NovelView(APIView):
     ?special_featured=true : only specially featured novels
     
     """
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
-    def get(self, request):
+    def get(self, request, pk=None):
 
         weekly_featured = request.query_params.get('weekly_featured', None)
 
         special_featured = request.query_params.get('special_featured', None)
 
-        if weekly_featured is not None and weekly_featured.lower() == 'true':
-            novels = NovelModel.objects.filter(publish=True, weekly_featured=True)
+        many = True
+
+        if pk :
+            novels = NovelModel.objects.get(id=pk, published=True)
+            many = False
+
+        elif weekly_featured is not None and weekly_featured.lower() == 'true':
+            novels = NovelModel.objects.filter(published=True, weekly_featured=True)
 
         elif special_featured is not None and special_featured.lower() == 'true':
-            novels = NovelModel.objects.filter(publish=True, special_featured=True)
+            novels = NovelModel.objects.filter(published=True, special_featured=True)
         
         else:
-            novels = NovelModel.objects.filter(publish=True)
+            novels = NovelModel.objects.filter(published=True)
 
-        serializers = NovelSerializer(novels , many=True)
+        serializers = NovelSerializer(novels , many=many)
         return Response({'status': 'success',
             'data': serializers.data}, status=status.HTTP_200_OK
         )
@@ -124,7 +130,7 @@ class ReadChapterView(APIView):
 
     def get(self, request, book, chapter):
         try:
-            novel = UserBook.objects.prefetch_related('book__chapters').get(book=book)
+            novel = UserBook.objects.prefetch_related('book__chapters').get(book=book, user=request.user)
             self.check_object_permissions(request, novel)
             serializer =  ChapterReadSerializer(novel.book.chapters.get(id=chapter))
             return Response({
@@ -134,10 +140,11 @@ class ReadChapterView(APIView):
         except APIException as e: 
             return Response({
                 "status": "failed",
-                "data": str(e)
-            }, status=status.HTTP_400_BAD_REQUEST)
-        except Exception :
+                "error": "You do not have permission to read this book"
+            }, status=status.HTTP_402_PAYMENT_REQUIRED)
+        except Exception as e:
             # log
+            print(e)    
             return Response({
                 "status": "failed",
                 "error": "No Chapter with Id "

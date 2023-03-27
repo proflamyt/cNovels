@@ -1,19 +1,18 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models.fields import PolygonField
-from authors.models import AuthorModel
 from django.conf import settings
 from django.urls import reverse
 
 # Create your models here.
 class NovelModel(models.Model):
     title = models.CharField(max_length=100)
-    authors = models.ManyToManyField(AuthorModel, related_name='books')
+    authors = models.ManyToManyField('authors.AuthorModel', related_name='books', null=True,)
     readers_num = models.IntegerField(blank=True, null=True)
     ratings = models.IntegerField(default=5.0)
     image = models.ImageField(null=True)
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)
-    pubished = models.BooleanField(default=True)
+    published = models.BooleanField(default=True)
     maptype = models.ForeignKey('MapType', on_delete=models.CASCADE, null=True, blank=True)
     date_uploaded = models.DateTimeField(
         null=True, blank=True, auto_now_add=True)
@@ -28,8 +27,8 @@ class NovelModel(models.Model):
     
 
 class Goal(models.Model):
-    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE, null=True,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,)
     goal_type_choices = (
         ('reading', 'Reading'),
         ('reviewing', 'Reviewing'),
@@ -45,7 +44,7 @@ class Goal(models.Model):
 
 class ChapterModel(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
-    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='chapters')
+    book = models.ForeignKey(NovelModel, on_delete=models.CASCADE, related_name='chapters', null=True,)
     content = models.TextField(null=True)
     date_uploaded = models.DateTimeField(
         null=True, blank=True, auto_now_add=True)
@@ -60,7 +59,7 @@ class MapType(models.Model):
     
 
     def get_absolute_url(self):    
-        return reverse('points', args=[str(self.novel_id), str(self.id)])
+        return reverse('points', args=[str(self.name), str(self.id)])
 
     def __str__(self) -> str:
         return self.name
@@ -115,7 +114,7 @@ class UserBook(models.Model):
     ]
     book = models.ForeignKey(NovelModel, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE, null=True,)
     can_read = models.BooleanField(default=False)
     state = models.CharField(
         max_length=1, choices=STATUS_CHOICES, default='u')
