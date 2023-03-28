@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import NovelModel, ChapterModel, SnapShots
+from .models import Goal, Marker, NovelModel, ChapterModel, SnapShots
 from authors.serializers import AuthorSerializer
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 
 class NovelSerializer(serializers.ModelSerializer):
@@ -28,7 +29,7 @@ class SnapshotSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = SnapShots
-        fields = '__all__'
+        fields = ['image']
 
 
 class ChapterReadSerializer(ChapterSerializer):
@@ -37,6 +38,19 @@ class ChapterReadSerializer(ChapterSerializer):
     class Meta(ChapterSerializer.Meta):
         fields = '__all__'
 
+
+
 class UserBookGoalSerializer(serializers.ModelSerializer):
     class Meta:
+        model = Goal
         exclude = ('user')
+
+
+class NovelMarkerSerializer(GeoFeatureModelSerializer):
+    chapter = serializers.SlugRelatedField(many=True, read_only=True, slug_field='title')
+    claimed_by = serializers.SlugRelatedField( read_only=True, slug_field='username')
+    
+    class Meta:
+        model = Marker
+        geo_field = "location"
+        fields = ['name', 'claimed_by', 'description', 'chapter']

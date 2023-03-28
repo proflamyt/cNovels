@@ -14,7 +14,7 @@ class NovelModel(models.Model):
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)
     published = models.BooleanField(default=True)
-    maptype = models.ForeignKey('MapType', on_delete=models.CASCADE, null=True, blank=True)
+    maptype = models.ForeignKey('MapType', on_delete=models.CASCADE, related_name='maps', null=True, blank=True)
     date_uploaded = models.DateTimeField(
         null=True, blank=True, auto_now_add=True)
     

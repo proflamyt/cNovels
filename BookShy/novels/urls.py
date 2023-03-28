@@ -1,4 +1,4 @@
-from .views import (NovelView, NovelSearchView, 
+from .views import (NovelView, NovelSearchView, MapView,
 RecentReadViewSet, RenderMap, ReadChapterView, UserBookGoalList, SnapShotsView)
 
 from django.urls import path
@@ -7,6 +7,7 @@ from django.urls import path
 urlpatterns = [
     path('', NovelView.as_view(), name='novels'),
     path('<int:pk>', NovelView.as_view(), name='novels'),
+    path('<int:pk>/map', MapView.as_view(), name='map'),
     path('<int:pk>/snapshots', SnapShotsView.as_view(), name='snapshots'),
     path('recent-reads', RecentReadViewSet.as_view(), name='recent-reads'),
     path('search/', NovelSearchView.as_view(), name='search_novels'),

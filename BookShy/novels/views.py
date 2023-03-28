@@ -9,7 +9,8 @@ from rest_framework.exceptions import APIException
 from .utils.custom_permission import CanReadBook
 
 
-from .serializers import ChapterReadSerializer, NovelSerializer, ChapterSerializer, SnapshotSerializer, UserBookGoalSerializer
+from .serializers import (ChapterReadSerializer, NovelSerializer, ChapterSerializer,
+                           SnapshotSerializer, UserBookGoalSerializer, NovelMarkerSerializer)
 from .models import ChapterModel, Goal, NovelModel, SnapShots, UserBook
 
 from .utils.map_server import map_view
@@ -147,8 +148,7 @@ class ReadChapterView(APIView):
                 "error": "You do not have permission to read this book"
             }, status=status.HTTP_402_PAYMENT_REQUIRED)
         except Exception as e:
-            # log
-            print(e)    
+    
             return Response({
                 "status": "failed",
                 "error": "No Chapter with Id "
@@ -161,3 +161,27 @@ class UserBookGoalList(generics.ListAPIView):
     def get_queryset(self):
         
         return Goal.objects.filter(user=self.request.user)
+    
+
+class MapView(APIView):
+
+    def get(self, request, pk):
+        try:
+            novel = NovelModel.objects.prefetch_related('maptype__marker_set').get(pk=pk)
+            
+            serializer = NovelMarkerSerializer(novel.maptype.marker_set, many=True)
+            return Response({
+                "status":"success",
+                "data": serializer.data
+
+            })
+        except Exception as e:
+            print(e)
+            return Response({
+                "status":"failed",
+                "error": "No Novel with selected ID"
+
+            })
+
+
+

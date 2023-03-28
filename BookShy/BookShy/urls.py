@@ -21,4 +21,5 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('novels/', include('novels.urls')),
     path('authors/', include('authors.urls')),
+    path('users/', include('users.urls')),
 ]
