@@ -78,11 +78,13 @@ class RecentReadViewSet(APIView):
         )
     
 
-class NovelSearchView(APIView):
+class NovelSearchView(generics.ListAPIView):
     """
     Displays all novels with just 'get request' , filters the searches with ?search query ;
     e.g
-     /novel/search=mkmkmk?genre=&author= 
+    novels/search?genre=fantancy : filters genre by fantancy
+    novels/search?search=o&genre=o : searched by 
+
     
     will return all novel objects relating to ola
     
@@ -90,7 +92,8 @@ class NovelSearchView(APIView):
     queryset = NovelModel.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['genre']
-    search_fields = ['title']
+    search_fields = ['title', 'authors__name']
+    serializer_class = NovelSerializer
 
 
 # cache
@@ -106,16 +109,17 @@ class RenderMap(APIView):
 class SnapShotsView(APIView):
     def get(self, request, pk):
         try:
-            images = NovelModel.objects.select_related('snap_images__snapshots').get(id=pk)
-            serializer = SnapshotSerializer(data=images.snap_images.snapshots, many=True)
+            images = SnapShots.objects.filter(novel_id=pk)
+            serializer = SnapshotSerializer(images, many=True)
             return Response({
                 "status": "success", 
                 "data": serializer.data
             })
-        except:
+        except Exception as e:
+            print(e)
             return Response({
                 "status": "fail", 
-                "error": "no Novel found with the given ID"
+                "error": "no SnapShot found with the given ID"
             }, status=status.HTTP_400_BAD_REQUEST)
 
 

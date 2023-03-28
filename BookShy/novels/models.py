@@ -6,9 +6,10 @@ from django.urls import reverse
 # Create your models here.
 class NovelModel(models.Model):
     title = models.CharField(max_length=100)
-    authors = models.ManyToManyField('authors.AuthorModel', related_name='books', null=True,)
+    authors = models.ManyToManyField('authors.AuthorModel', related_name='books')
     readers_num = models.IntegerField(blank=True, null=True)
     ratings = models.IntegerField(default=5.0)
+    genre = models.ManyToManyField('Genre')
     image = models.ImageField(null=True)
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)
@@ -118,3 +119,10 @@ class UserBook(models.Model):
     can_read = models.BooleanField(default=False)
     state = models.CharField(
         max_length=1, choices=STATUS_CHOICES, default='u')
+    
+
+class Genre(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name

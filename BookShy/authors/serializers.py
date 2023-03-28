@@ -8,3 +8,5 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthorModel
         fields = ('id', 'name', 'user_image')
+
+

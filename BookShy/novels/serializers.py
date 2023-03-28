@@ -8,8 +8,13 @@ class NovelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NovelModel
-        fields = ['title', 'image', 'authors']
+        fields = ['title', 'image', 'authors', 'genre', 'ratings']
 
+
+class AuthorDetailSerializer(AuthorSerializer):
+    books = NovelSerializer(many=True)
+    class Meta(AuthorSerializer.Meta):
+        fields = ('id', 'name', 'user_image', 'books')
 
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -29,6 +34,8 @@ class SnapshotSerializer(serializers.ModelSerializer):
 class ChapterReadSerializer(ChapterSerializer):
     content = serializers.CharField()
 
+    class Meta(ChapterSerializer.Meta):
+        fields = '__all__'
 
 class UserBookGoalSerializer(serializers.ModelSerializer):
     class Meta:

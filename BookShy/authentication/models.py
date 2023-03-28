@@ -13,10 +13,10 @@ class User(AbstractUser):
     favorite = models.ManyToManyField('novels.NovelModel', blank=True)
 
     saved_novels = models.ManyToManyField(
-        'novels.NovelModel', blank=True,  null=True,  related_name='saved_novel')
+        'novels.NovelModel', blank=True,   related_name='saved_novel')
     
     recently_viewed_chapters = models.ManyToManyField(
-        'novels.ChapterModel', blank=True, null=True, related_name='recently_viewed_chapters')
+        'novels.ChapterModel', blank=True,  related_name='recently_viewed_chapters')
     
     last_searched = models.CharField(
         max_length=200, blank=True, unique=True, null=True )

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.gis.admin import GeoModelAdmin
 
 
-from novels.models import NovelModel, ChapterModel, MapType, Marker, Area, UserBook
+from novels.models import NovelModel, ChapterModel, MapType, Marker, Area, UserBook, SnapShots
 
 # Register your models here.
 
@@ -20,3 +20,4 @@ admin.site.register(MapType)
 admin.site.register(Marker, CustomGeoAdmin)
 admin.site.register(Area)
 admin.site.register(UserBook)
+admin.site.register(SnapShots)
