@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 
 from .models import UserIntrest
 from .utils.mailer import verification_email
+from .utils.choices import *
 
 User = get_user_model()
 
@@ -37,13 +38,29 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserInterestSerializer(serializers.ModelSerializer):
+    hobbies = serializers.MultipleChoiceField(
+                        choices = HOBBIES)
+    genre = serializers.MultipleChoiceField(
+                        choices = GENRE)
+    language = serializers.MultipleChoiceField(
+                        choices = LANGUAGE)
+    profile = serializers.MultipleChoiceField(
+                        choices = PROFILE)
+    history = serializers.MultipleChoiceField(
+                        choices = HISTORY)
+    identity = serializers.MultipleChoiceField(
+                        choices = IDENTITY
+    )
+    faith = serializers.MultipleChoiceField(
+                        choices = FAITH
+    )
 
     def create(self, validated_data):
         user = self.context["user"]
         if user.has_interest:
             raise serializers.ValidationError("User Already Registered Intrest.")
         user_interests = UserIntrest.objects.create(user=user, **validated_data)
-        user.update(has_interest=True)
+        user.objects.update(has_interest=True)
         return user_interests
     
     class Meta:
