@@ -60,7 +60,8 @@ class UserInterestSerializer(serializers.ModelSerializer):
         if user.has_interest:
             raise serializers.ValidationError("User Already Registered Intrest.")
         user_interests = UserIntrest.objects.create(user=user, **validated_data)
-        user.objects.update(has_interest=True)
+        user.has_interest = False
+        user.save(update_fields=['has_interest'])
         return user_interests
     
     class Meta:
