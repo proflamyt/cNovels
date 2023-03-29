@@ -144,7 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.User'
 
-GDAL_LIBRARY_PATH = r'C:\OSGeo4W\bin\gdal306.dll'
+
 
 if DEBUG:
   
@@ -178,6 +178,7 @@ REST_FRAMEWORK = {
 
 import os
 if os.name == 'nt':
+    GDAL_LIBRARY_PATH = r'C:\OSGeo4W\bin\gdal306.dll'
     import platform
     OSGEO4W = r"C:\OSGeo4W"
    
