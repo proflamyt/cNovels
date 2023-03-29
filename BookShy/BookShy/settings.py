@@ -19,7 +19,7 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(path.join(BASE_DIR, "../.env"))
-# load_dotenv("/etc/secrets/.env")
+load_dotenv("/etc/secrets/.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
