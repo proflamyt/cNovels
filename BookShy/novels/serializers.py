@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Goal, Marker, NovelModel, ChapterModel, SnapShots
+from .models import Goal, Marker, NovelModel, ChapterModel, SnapShots, Genre
 from authors.serializers import AuthorSerializer
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
@@ -55,3 +55,9 @@ class NovelMarkerSerializer(GeoFeatureModelSerializer):
         model = Marker
         geo_field = "location"
         fields = ['name', 'claimed_by', 'description', 'chapter']
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = '__all__'

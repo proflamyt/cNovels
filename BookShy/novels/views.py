@@ -9,9 +9,9 @@ from rest_framework.exceptions import APIException
 from .utils.custom_permission import CanReadBook
 
 
-from .serializers import (ChapterReadSerializer, NovelSerializer, ChapterSerializer,
+from .serializers import (ChapterReadSerializer, GenreSerializer, NovelSerializer, ChapterSerializer,
                            SnapshotSerializer, UserBookGoalSerializer, NovelMarkerSerializer)
-from .models import ChapterModel, Goal, NovelModel, SnapShots, UserBook
+from .models import ChapterModel, Genre, Goal, NovelModel, SnapShots, UserBook
 
 from .utils.map_server import map_view
 
@@ -173,7 +173,6 @@ class MapView(APIView):
 
             })
         except Exception as e:
-            print(e)
             return Response({
                 "status":"failed",
                 "error": "No Novel with selected ID"
@@ -182,3 +181,9 @@ class MapView(APIView):
 
 
 
+class GenresView(APIView):
+    def get(self, request):
+        genres = Genre.objects.all()
+        serializer = GenreSerializer(genres)
+        return Response({"status": "success", "data": serializer.data})
+        

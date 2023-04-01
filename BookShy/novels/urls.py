@@ -1,4 +1,4 @@
-from .views import (NovelView, NovelSearchView, MapView,
+from .views import (GenresView, NovelView, NovelSearchView, MapView,
 RecentReadViewSet, RenderMap, ReadChapterView, UserBookGoalList, SnapShotsView)
 
 from django.urls import path
@@ -14,6 +14,7 @@ urlpatterns = [
     path('tiles/<zoom>/<y>/<x>/<z>', RenderMap.as_view()),
     path('<int:book>/chapters/<int:chapter>/', ReadChapterView.as_view(), name='read_chapter'),
     path('goals/', UserBookGoalList.as_view(), name='user-book-goal-list'),
+    path('genres', GenresView.as_view())
     
 
 ]
