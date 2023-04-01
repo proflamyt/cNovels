@@ -92,7 +92,9 @@ class NovelSearchView(generics.ListAPIView):
     """
     queryset = NovelModel.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['genre']
+    filterset_fields = {
+        'genre': 'genre_name'
+    }
     search_fields = ['title', 'authors__name']
     serializer_class = NovelSerializer
 
@@ -117,7 +119,7 @@ class SnapShotsView(APIView):
                 "data": serializer.data
             })
         except Exception as e:
-            print(e)
+            
             return Response({
                 "status": "fail", 
                 "error": "no SnapShot found with the given ID"

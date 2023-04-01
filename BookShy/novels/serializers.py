@@ -6,6 +6,7 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 class NovelSerializer(serializers.ModelSerializer):
     authors = AuthorSerializer(many=True)
+    genre = serializers.SlugRelatedField(slug_field='name', many=True)
 
     class Meta:
         model = NovelModel
