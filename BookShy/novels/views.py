@@ -39,11 +39,8 @@ class NovelView(APIView):
 
         special_featured = request.query_params.get('special_featured', None)
 
-        many = True
-
         if pk :
             novels = NovelModel.objects.get(id=pk, published=True)
-            many = False
 
         elif weekly_featured is not None and weekly_featured.lower() == 'true':
             novels = NovelModel.objects.filter(published=True, weekly_featured=True)
@@ -54,7 +51,7 @@ class NovelView(APIView):
         else:
             novels = NovelModel.objects.filter(published=True)
 
-        serializers = NovelSerializer(novels , many=many)
+        serializers = NovelSerializer(novels , many= (pk==None))
         return Response({'status': 'success',
             'data': serializers.data}, status=status.HTTP_200_OK
         )
