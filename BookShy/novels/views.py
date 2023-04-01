@@ -92,9 +92,7 @@ class NovelSearchView(generics.ListAPIView):
     """
     queryset = NovelModel.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = {
-        'genre': 'genre_name'
-    }
+    filterset_fields = ['genre_name']
     search_fields = ['title', 'authors__name']
     serializer_class = NovelSerializer
 
