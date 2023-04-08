@@ -59,3 +59,21 @@ class GroupChat(models.Model):
 class AudioRoom(models.Model):
     authors = models.ManyToManyField('authors.AuthorModel')
     
+
+
+class Post(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='posts')
+    file = models.FileField(null=True, blank=True)
+    content =  models.TextField(max_length=600)
+    likes = models.IntegerField()
+    share = models.IntegerField()
+    time = models.DateTimeField(auto_now_add=True)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.TextField(max_length=200)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='commenters')
+    time = models.DateTimeField(auto_now_add=True)
