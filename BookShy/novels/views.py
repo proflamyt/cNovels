@@ -184,6 +184,6 @@ class MapView(APIView):
 class GenresView(APIView):
     def get(self, request):
         genres = Genre.objects.all()
-        serializer = GenreSerializer(genres)
+        serializer = GenreSerializer(genres, many=True)
         return Response({"status": "success", "data": serializer.data})
         
