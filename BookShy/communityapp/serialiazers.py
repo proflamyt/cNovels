@@ -24,11 +24,17 @@ class CitizenSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     creator = CitizenSerializer(read_only=True)
-    admins = CitizenSerializer(many=True, read_only=True)
+    admins = CitizenSerializer(many=True)
     class Meta:
         model = Room
         fields = '__all__'
         depth= 2
+        
+    def create(self, validated_data):
+        validated_data['creator'] = self.context['request'].user
+        return super().create(validated_data)
+
+    
 
 
 
@@ -39,3 +45,6 @@ class GroupSerializer(serializers.ModelSerializer):
         model = GroupChat
         fields = '__all__'
         depth = 2
+
+
+

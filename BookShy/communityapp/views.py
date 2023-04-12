@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
-from .serialiazers import PostSerializer
+from .serialiazers import PostSerializer, RoomSerializer
 from rest_framework.response import Response 
-from .models import Post
+from .models import Post, Room
 
 from utils.pubs import publish_data_on_redis, redis_client
 # create post
@@ -26,10 +26,14 @@ class RoomView(APIView):
 
     # create room only authors
     def post(self, request):
-        ...
-
-        
+        serializer = RoomSerializer(data=request.data, context = {'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            redis_client.set(f"room:{serializer.id}:name", f"{serializer.name}")
+            redis_client.sadd(f"user:{self.request.user.id}:room:admin", f"{serializer.admins}")
+            return Response(serializer.data)
+        return Response(serializer.errors)
 
     # join room  
-    def put():
+    def put(self, request):
         ...
