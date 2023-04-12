@@ -68,7 +68,7 @@ class Post(models.Model):
     content =  models.TextField(max_length=600)
     likes = models.IntegerField()
     share = models.IntegerField()
-    time = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):
