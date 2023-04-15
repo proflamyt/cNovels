@@ -15,7 +15,7 @@ class Room(models.Model):
 
 
 class RoomMessage(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
     message = models.CharField(max_length=200)
     date = models.DateField()
 
@@ -46,7 +46,7 @@ class Event(models.Model):
 
 
 class GroupChat(models.Model):
-    citizens = models.ManyToManyField(User)
+    citizens = models.ManyToManyField(User, related_name='citizens')
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
     event = models.ForeignKey(
         Event, null=True, blank=True, on_delete=models.SET_NULL)
