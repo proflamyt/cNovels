@@ -12,6 +12,15 @@ class NovelSerializer(serializers.ModelSerializer):
         model = NovelModel
         fields = ['title', 'image', 'authors', 'genre', 'ratings']
 
+    def get_fields(self):
+        fields = super().get_fields()
+        
+        # conditionally include the overview field based on many parameter
+        if self.context.get('many', False):
+            fields['overview'] = serializers.CharField(source='overview', read_only=True)
+            
+        return fields
+
 
 class AuthorDetailSerializer(AuthorSerializer):
     books = NovelSerializer(many=True)

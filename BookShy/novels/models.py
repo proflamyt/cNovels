@@ -10,6 +10,7 @@ class NovelModel(models.Model):
     readers_num = models.IntegerField(blank=True, null=True)
     ratings = models.IntegerField(default=5.0)
     genre = models.ManyToManyField('Genre')
+    overview = models.TextField()
     image = models.ImageField(null=True)
     weekly_featured = models.BooleanField(default=False)
     special_featured = models.BooleanField(default=False)

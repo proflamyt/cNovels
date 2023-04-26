@@ -51,7 +51,7 @@ class NovelView(APIView):
         else:
             novels = NovelModel.objects.filter(published=True)
 
-        serializers = NovelSerializer(novels , many= (pk==None))
+        serializers = NovelSerializer(novels , many = (pk==None))
         return Response({'status': 'success',
             'data': serializers.data}, status=status.HTTP_200_OK
         )
